@@ -25,7 +25,7 @@ export class UsersController {
   constructor(
     private userService: UserService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   @Get()
   // @UseInterceptors(BlackListInterceptor)
@@ -39,8 +39,8 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   showUserById(@Param('id', new ParseUUIDPipe()) id: string) {
-   return this.userService.findById(id);
-  
+    return this.userService.findById(id);
+
   }
 
   @Delete(':id')
@@ -70,27 +70,4 @@ export class UsersController {
   async syncUserRedisToDb() {
     return this.userService.syncUserRedisToDb();
   }
-
-  @MessagePattern({ cmd: 'get-user' })
-  async getUser(@Payload() data: UserWithTokenMicroDTO, @Ctx() context: RmqContext) {
-    //Verify token
-    const user = await this.authService.verifyFromChat({
-      socketUserId:data.socketUserId,
-      token: data.token
-    });
-    return this.userService.findById(user.id);
-  }
-  
-  @MessagePattern({ cmd: 'check-existed-user' })
-  async isExistedUser(@Payload() data: { userIds: string[] }, @Ctx() context: RmqContext) {
-    // Not Verify token
-    return this.userService.isExistedUser(data.userIds);
-  }
-
-  @MessagePattern({ cmd: 'check-existed-socket-id-of-member' })
-  async isExistedSocketId(@Payload() data: MemberMicroDTO, @Ctx() context: RmqContext) {
-    // Not Verify token
-    return this.userService.isExistedSocketId(data.memberId, data.socketId);
-  }
-
 }

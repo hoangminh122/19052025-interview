@@ -7,11 +7,9 @@ import { QueryUserInput } from './dto/query-user.input';
 import { UserGenericRepository, UserRedisOmRepository } from 'src/repositories/user/user-postgres.repository';
 import { getHash } from 'src/shared/utils/bcrypt';
 import { REPOSITORY_NAME } from 'src/shared/constant/repository-config.constant';
-import { WorkerPool } from 'src/shared/config/worker';
-import { UserEntity } from 'src/entities/redis-om/User.redis-entity';
 import { User } from 'src/entities/auth/User.entity';
+import { UserEntity } from 'src/entities/redis-om/User.redis-entity';
 
-const pool = (new WorkerPool).getWorkerPoolIns();
 
 @Injectable()
 export class UserService {
@@ -191,21 +189,6 @@ export class UserService {
       await this.userRepository.update({ id }, userUpdate);
       return true;
     })
-  }
-
-  async isExistedSocketId(_id: string, socketId: string): Promise<boolean> {
-    return pool.createTask(async (data: { _id: string, socketId: string }) => {
-      require('reflect-metadata');
-      const { connectClient } = require('src/shared/config/redis-om.config');
-      const { UserRedisOmRepository } = require('src/repositories/user/user-postgres.repository');
-
-      connectClient();
-      const userRedisOmRepository = new UserRedisOmRepository();
-      const queryString = userRedisOmRepository.mapQueryString({ _id: data._id });
-      const user = await userRedisOmRepository.getOne(queryString);
-      if (!user) return false;
-      return !!user?.socketIds?.includes(data.socketId);
-    }).runAsync({ _id, socketId });
   }
 
   async isExistedUser(ids: string[]): Promise<boolean> {

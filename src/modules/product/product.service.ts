@@ -2,15 +2,10 @@
 import {
   Injectable,
   Inject,
-  HttpException,
-  HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
-import { TransactionWork } from '../database/UnitOfWork';
 import { Op } from 'sequelize';
-import { getHash } from 'src/shared/utils/bcrypt';
 import { REPOSITORY_NAME } from 'src/shared/constant/repository-config.constant';
-import { WorkerPool } from 'src/shared/config/worker';
 import { User } from 'src/entities/auth/User.entity';
 import { ProductRepository } from 'src/repositories/product/product.repository';
 import { QueryProductInput } from './dto/query-product.input';

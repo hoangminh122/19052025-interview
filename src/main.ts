@@ -5,7 +5,6 @@ import { config } from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/interceptor/http-except.interceptor';
 import { LoggerService } from './modules/logger/logger.service';
-import { NotiSlack } from './shared/config/slack.config';
 
 config();
 
@@ -16,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // Global exception filter
-  app.useGlobalFilters(new HttpExceptionFilter(new LoggerService(new NotiSlack())));
+  app.useGlobalFilters(new HttpExceptionFilter(new LoggerService()));
 
   // Enable CORS
   app.enableCors();
