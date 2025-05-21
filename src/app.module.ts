@@ -1,4 +1,4 @@
-import {  MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthController } from './modules/auth/auth.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/database/database.module';
@@ -10,6 +10,7 @@ import { HttpConfigService } from './shared/config/http-service.config';
 import { blackListInterceptor, httpExceptionFilter } from './shared/config/provider/except-interceptor.provider';
 import { RedisModule } from './modules/redis/redis.module';
 import { cacheModuleInstance } from './shared/config/redis-om.config';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { cacheModuleInstance } from './shared/config/redis-om.config';
     }),
     AuthModule,
     UserModule,
+    ProductModule,
     DatabaseModule,
     LoggerModule,
     RedisModule

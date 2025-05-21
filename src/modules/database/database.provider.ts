@@ -10,6 +10,10 @@ import { RolePermission } from 'src/entities/auth/RolePermission.entity';
 import { User } from 'src/entities/auth/User.entity';
 import { UserRole } from 'src/entities/auth/UserRole.entity';
 import { Role } from 'src/entities/auth/Role.entity';
+import { Product } from 'src/entities/product/Product.entity';
+import { Category } from 'src/entities/product/Category.entity';
+import { ProductLike } from 'src/entities/product/ProductLike.enity';
+import { Subcategory } from 'src/entities/product/SubCategory.entity';
 
 const namespace = cls.createNamespace('ENROLMENT_APPLICANTS_SERVICE');
 
@@ -67,13 +71,13 @@ export const databaseProvider = {
     (Sequelize as any).__proto__.useCLS(namespace);
 
     const sequelize = new Sequelize({ ...config, operatorsAliases });
-    sequelize.addModels([Role, User, UserRole, Permission, RolePermission]);
+    sequelize.addModels([Role, User, UserRole, Permission, RolePermission, Product, Category, ProductLike, Subcategory]);
 
     //redis om entity
     connectClient();      //connect redis om
     const personRepository = client.fetchRepository(userSchemaRedis)    /* use the client to create a Repository just for Persons */
     await personRepository.createIndex();     /* create the index for Person */
 
-    return sequelize.sync({ force: true });
+    return sequelize.sync({ force: false });
   },
 };

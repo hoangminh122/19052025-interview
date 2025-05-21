@@ -103,11 +103,11 @@ export class UserService {
     const queryString = this.userRedisOmRepository.mapQueryString(cond);
     let user = await this.userRedisOmRepository.getOne(queryString);
     if (!user) {
-      user = await this.userRepository.findOne(cond);
+      const userDb = await this.userRepository.findOne(cond);
       //update to cache redis
-      if (user) {
-        const userRedis = this.mapUserEntity(user);
-        this.userRedisOmRepository.createAndSave(userRedis);
+      if (userDb) {
+        const userRedis = this.mapUserEntity(userDb);
+        return this.userRedisOmRepository.createAndSave(userRedis);
       }
     }
     return user;

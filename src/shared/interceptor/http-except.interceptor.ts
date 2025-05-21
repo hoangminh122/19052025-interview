@@ -6,20 +6,20 @@ import { IErrorResponse } from '../utils/response/interface/error-res.interface'
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService) {}
+  constructor(private logger: LoggerService) { }
 
   catch(exception: HttpException | Error, host: ArgumentsHost): void {
     const ctx: HttpArgumentsHost = host.switchToHttp()
     const response: Response = ctx.getResponse()
     const request = ctx.getRequest();
-    
+
     // Handling error message and logging
     this.handleMessage(exception, request)
-    
+
     // Response to client
     HttpExceptionFilter.handleResponse(response, exception)
   }
-  
+
   private handleMessage(exception: HttpException | Error, request?): void {
     let message = HttpStatus[HttpStatus.INTERNAL_SERVER_ERROR]
     const endpoint = request?.route?.path || '';
@@ -32,14 +32,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
     message = `[${endpoint}]: ${message}`
     this.logger.error(message)
   }
-  
-  private static handleResponse(response: Response , exception: HttpException | Error): void {
+
+  private static handleResponse(response: Response, exception: HttpException | Error): void {
     let responseBody: IErrorResponse = { error: HttpStatus[HttpStatus.INTERNAL_SERVER_ERROR], success: false };
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR
     if (exception instanceof HttpException) {
+      console.log(exception.getResponse() as any)
       responseBody.error = (exception.getResponse() as any)?.message?.toString() ?? HttpStatus[HttpStatus.INTERNAL_SERVER_ERROR];
       statusCode = exception.getStatus();
-      
+
     } else if (exception instanceof Error) {
       responseBody = {
         error: exception.stack,

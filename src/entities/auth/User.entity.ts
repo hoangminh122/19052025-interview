@@ -3,7 +3,7 @@ import { Role } from "./Role.entity";
 import { UserRole } from "./UserRole.entity";
 
 @Table({
-    tableName:'user',
+    tableName: 'user',
     timestamps: true,
     paranoid: true
 })
@@ -11,64 +11,64 @@ export class User extends Model {
     @IsUUID(4)
     @PrimaryKey
     @Column({
-        type:DataType.UUID,
-        defaultValue:Sequelize.literal('uuid_generate_v4()')
+        type: DataType.UUID,
+        defaultValue: Sequelize.literal('uuid_generate_v4()')
     })
-    id!:string;
+    id: string;
 
     @Column({
         allowNull: true,
-        type:DataType.STRING,
+        type: DataType.STRING,
         field: 'first_name'
     })
     firstName: string;
-    
+
     @Column({
         allowNull: true,
-        type:DataType.STRING,
+        type: DataType.STRING,
         field: 'last_name'
     })
     lastName: string;
 
     @Column({
-        allowNull:false,
-        type:DataType.STRING,
-        unique:true
+        allowNull: false,
+        type: DataType.STRING,
+        unique: true
     })
-    email:string;
+    email: string;
 
     @Column({
-        allowNull:true,
-        type:DataType.STRING,
-        unique:true
+        allowNull: true,
+        type: DataType.STRING,
+        unique: true
     })
-    phone:string;
+    phone: string;
 
     @Column({
-        allowNull:true,
-        type:DataType.STRING,
-        unique:true
+        allowNull: true,
+        type: DataType.STRING,
+        unique: true
     })
     username: string;
 
     @Column({
-        allowNull:false,
-        type:DataType.STRING
+        allowNull: false,
+        type: DataType.STRING
     })
-    password:string;
+    password: string;
 
     @Column({
-        allowNull:true,
-        defaultValue:false,
-        type:DataType.BOOLEAN
+        allowNull: true,
+        defaultValue: false,
+        type: DataType.BOOLEAN
     })
-    isVerify:boolean;
+    isVerify: boolean;
 
     @Column({
-        defaultValue:false,
-        type:DataType.BOOLEAN
+        defaultValue: false,
+        type: DataType.BOOLEAN
     })
-    isActive:boolean;
+    isActive: boolean;
 
     @Column({
         defaultValue: [],
@@ -81,19 +81,19 @@ export class User extends Model {
     public createdAt: Date;
 
     @UpdatedAt
-    @Column({  allowNull: true,field: 'updated_at', type: DataType.DATE })
+    @Column({ allowNull: true, field: 'updated_at', type: DataType.DATE })
     public updatedAt: Date;
 
     @DeletedAt
-    @Column({  allowNull: true,field: 'deleted_at', type: DataType.DATE })
+    @Column({ allowNull: true, field: 'deleted_at', type: DataType.DATE })
     public deletedAt: Date;
 
     @BelongsToMany(() => Role, {
         through: {
-          model: () => UserRole,
+            model: () => UserRole,
         },
         foreignKey: 'user_id',
-    
+
         constraints: false,
     })
     roles?: Role[];
