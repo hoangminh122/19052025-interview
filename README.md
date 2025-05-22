@@ -12,4 +12,8 @@
 
 # npm run migrate
 
+# Run for dev
+
+# npm i & npm run start:dev
+
 # Open swagger: http://localhost:7001/api
