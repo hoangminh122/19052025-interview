@@ -1,12 +1,11 @@
+import { config } from 'dotenv';
+config();
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { config } from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/interceptor/http-except.interceptor';
 import { LoggerService } from './modules/logger/logger.service';
-
-config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

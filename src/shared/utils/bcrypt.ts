@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+const bcrypt = require('bcryptjs');
 import { SALT_ROUNDS } from '../constant/bcypt.constant';
 
 function comparePassword(

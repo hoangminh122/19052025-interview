@@ -1,25 +1,30 @@
-import { CacheModule } from '@nestjs/common/cache';
-import { Client } from 'redis-om'
+import { CacheModule } from '@nestjs/common';
+import { Client } from 'redis-om';
 import * as redisStore from 'cache-manager-redis-store';
+require('dotenv').config();
 
-const url = `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` || '';  
-const client = new Client()
+const redisHost = process.env.REDIS_HOST || 'redis';
+const redisPort = Number(process.env.REDIS_PORT) || 6379;
+
+const redisUrl = `redis://${redisHost}:${redisPort}`;
+
+const client = new Client();
 
 const connectClient = async () => {
   if (!client.isOpen()) {
-    await client.open('redis://localhost:6379')
+    console.log('Connecting to Redis at:', redisUrl);
+    await client.open(redisUrl);
   }
-}
+};
 
 const cacheModuleInstance = CacheModule.register({
-  store: redisStore as any,
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-  // auth_pass: process.env.REDIS_PASSWORD,
   isGlobal: true,
-  ttl: Number(process.env.CACHE_TTL_IN_SECOND) || 10000,
+  store: redisStore as any,
+  host: redisHost,
+  port: redisPort,
+  ttl: Number(process.env.CACHE_TTL_IN_SECOND) || 600,
   max: Number(process.env.CACHE_MAX_ITEM) || 100,
-})
+});
 
 export {
   client,

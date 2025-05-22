@@ -10,4 +10,6 @@
 
 # docker exec -it auth-app /bin/sh
 
+# npm run migrate
+
 # Open swagger: http://localhost:7001/api
