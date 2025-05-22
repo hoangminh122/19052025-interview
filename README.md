@@ -2,6 +2,8 @@
 
 # Setup docker
 
+# mv .env.example .env
+
 # Run docker compose : docker compose up -d
 
 # Run migrate
