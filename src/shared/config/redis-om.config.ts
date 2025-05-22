@@ -20,8 +20,8 @@ const connectClient = async () => {
 const cacheModuleInstance = CacheModule.register({
   isGlobal: true,
   store: redisStore as any,
-  host: redisHost,
-  port: redisPort,
+  host: redisHost || 'redis',
+  port: redisPort || 6379,
   ttl: Number(process.env.CACHE_TTL_IN_SECOND) || 600,
   max: Number(process.env.CACHE_MAX_ITEM) || 100,
 });
