@@ -78,6 +78,6 @@ export const databaseProvider = {
     const personRepository = client.fetchRepository(userSchemaRedis)    /* use the client to create a Repository just for Persons */
     await personRepository.createIndex();     /* create the index for Person */
 
-    return sequelize.sync({ force: false });
+    return sequelize.sync({ force: true });
   },
 };

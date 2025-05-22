@@ -2,9 +2,8 @@ version: '3.8'
 
 services:
   app:
-    image: node:18
+    build: .
     container_name: auth-app
-    command: tail -f /dev/null
     ports:
       - "${API_PORT}:${API_PORT}"
     env_file:
@@ -12,6 +11,8 @@ services:
     depends_on:
       - db
       - redis
+    volumes:
+      - .:/app
 
   db:
     image: postgres:15

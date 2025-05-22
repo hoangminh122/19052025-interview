@@ -5,31 +5,25 @@ import { CACHE_PREFIX } from '../constant/cache-auth.constant';
 @Injectable()
 export class BlackListInterceptor extends CacheInterceptor {
 
-    trackBy(context: ExecutionContext): string | undefined {
-        const cacheKey = this.reflector.get(
-          CACHE_KEY_METADATA,
-          context.getHandler(),
-        );
-     
-        if (cacheKey) {
-          const request = context.switchToHttp().getRequest();
-          return `${cacheKey}-${request._parsedUrl.query}`;
-        }
-     
-        return super.trackBy(context);
+  trackBy(context: ExecutionContext): string | undefined {
+    const cacheKey = this.reflector.get(
+      CACHE_KEY_METADATA,
+      context.getHandler(),
+    );
+
+    if (cacheKey) {
+      const request = context.switchToHttp().getRequest();
+      return `${cacheKey}-${request._parsedUrl.query}`;
     }
 
-    async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
-      const cacheKey = this.reflector.get(
-        CACHE_MANAGER,
-        context.getHandler(),
-      );
+    return super.trackBy(context);
+  }
 
-      // await this.cacheManager
-      // if (cacheKey) {
-      //   const request = context.switchToHttp().getRequest();
-      //   // return `${cacheKey}-${request._parsedUrl.query}`;
-      // }
-      return next.handle();
-    }
+  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+    const cacheKey = this.reflector.get(
+      CACHE_MANAGER,
+      context.getHandler(),
+    );
+    return next.handle();
+  }
 }

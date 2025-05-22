@@ -1,2 +1,11 @@
 # auth-nestjs
-# 19052025-interview
+
+# Setup docker
+
+# Run docker compose : docker compose up -d
+
+# Run migrate
+
+# docker exec -it auth-app /bin/sh
+
+# Open swagger: http://localhost:7001/api
